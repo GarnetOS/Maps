@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<style>
+		/* Style the map container */
+		#map {
+			width: 300px;
+			height: 300px;
+			display: grid;
+			grid-template-columns: repeat(3, 100px);
+			grid-template-rows: repeat(3, 100px);
+		}
+
+		/* Style the map squares */
+		#map div {
+			background-size: 100px 100px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="map"></div>
+	<script>
+		// The base URL where the images are hosted
+		const baseUrl = "https://example.com/map-images";
+
+		// The width and height of each image
+		const imageWidth = 100;
+		const imageHeight = 100;
+
+		// The size of the resulting map
+		const mapWidth = 300;
+		const mapHeight = 300;
+
+		// The zoom level of the map (1 = 100%)
+		let zoom = 1;
+
+		// Get the map container element
+		const map = document.getElementById("map");
+
+		// Use a for loop to iterate over the rows of the map
+		for (let row = 0; row < mapHeight; row += imageHeight) {
+			// Use another for loop to iterate over the columns of the map
+			for (let col = 0; col < mapWidth; col += imageWidth) {
+				// Construct the URL of the image for this square on the map
+				const imageUrl = `${baseUrl}/${row}_${col}.jpg`;
+
+				// Create a new HTML element to represent the square on the map
+				const square = document.createElement("div");
+
+				// Set the background image of the square to the image at the specified URL
+				square.style.backgroundImage = `url('${imageUrl}')`;
+
+				// Add the square to the map container
+				map.appendChild(square);
+			}
+		}
+
+		// Add an event listener to the map container to handle the "wheel" event
+		map.addEventListener("wheel", event => {
+			// Calculate the new zoom level based on the wheel delta
+			zoom += event.deltaY * 0.001;
+
+			// Ensure that the zoom level remains within a valid range
+			zoom = Math.max(0.25, Math.min(zoom, 2));
+
+			// Update the map container's scroll property to zoom the map
+			map.scroll = `${zoom * 100}%`;
+		});
+	</script>
+</body>
+
+</html>
